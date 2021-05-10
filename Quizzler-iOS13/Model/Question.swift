@@ -10,5 +10,6 @@ import Foundation
 
 struct Question {
     var q: String
-    var a: String
+    var a: [ String]
+    var correctAnswer: String
 }
