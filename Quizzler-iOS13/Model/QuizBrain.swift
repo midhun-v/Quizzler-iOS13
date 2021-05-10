@@ -1,19 +1,14 @@
 //
-//  ViewController.swift
+//  QuizBrain.swift
 //  Quizzler-iOS13
 //
-//  Created by Angela Yu on 12/07/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
+//  Created by Midhun V on 04/05/21.
+//  Copyright © 2021 The App Brewery. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class ViewController: UIViewController {
-    
-    @IBOutlet weak var questionLabel: UILabel!
-    @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
+struct QuizBrain {
     
     let questions = [
         Question(q: "A slug's blood is green.", a: "True"),
@@ -33,45 +28,38 @@ class ViewController: UIViewController {
     var questionNumber = 0
     var score = 0
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        questionFunc()
-    }
-    
-    @IBAction func buttonPressed(_ sender: UIButton) {
-        
-        if sender.currentTitle! == questions[questionNumber].a {
-            print("Correct answer")
-            score += 1
-            sender.backgroundColor = UIColor.green
+    mutating func checkAnswer(answer userAnswer: String) -> Bool {
+        if userAnswer == questions[questionNumber].a {
+            score+=1
+            return true
         }
         else{
-            print("wrong answer")
-            sender.backgroundColor = UIColor.red
+            return false
         }
-        
-        print(questions.count-1 , questionNumber)
-        
+    }
+    
+    func getQuestionText () -> String {
+        return questions[questionNumber].q
+    }
+    
+    func getProgress () -> Float{
+        return Float(questionNumber+1)/Float(questions.count)
+    }
+    
+    mutating func questionCount() {
         if ((questions.count-1) > questionNumber) {
             questionNumber += 1
-            
-            //Delays to execute the function in the time
-            Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(questionFunc), userInfo: nil, repeats: false)
         }
         else if ((questions.count-1) == questionNumber) {
-            print ("Your score is", score)
-            viewDidLoad()
+            questionNumber = 0
+            score = 0
         }
-        
-        print(questions.count-1 , questionNumber)
     }
     
-    @objc func questionFunc() {
-        questionLabel.text = questions[questionNumber].q
-        trueButton.backgroundColor = UIColor.clear
-        falseButton.backgroundColor = UIColor.clear
+    func getScore() -> String {
+        return "Score : \(score) / \(questions.count)"
     }
     
-   
 }
+
 
